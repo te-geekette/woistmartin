@@ -1,0 +1,16 @@
+.compass-container {
+	height: 275px;
+	width: 300px;
+}
+
+.compass-circle {
+	position: absolute;
+	height: 40%;
+}
+
+.compass-needle {
+	position: relative;
+    left: 65px;
+    height: 200px;
+	top: 35px;    	
+}
