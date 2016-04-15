@@ -107,8 +107,18 @@
     }
 
     function savePosition(markerLng, markerLat){
-        console.log("Hello Backend, this is the position: Lat:" + markerLat + ", Lng: " + markerLng);
+
+        var xhttp = new XMLHttpRequest();
+        var xhttp2 = new XMLHttpRequest();
+
+        xhttp.open("GET", "http://localhost:8000/latitude/a/" + markerLat, false);
+        xhttp.send();
+
+        xhttp2.open("GET", "http://localhost:8000/longitude/a/" + markerLng, false);
+        xhttp2.send();
     }
+
+
 
 
   </script>
