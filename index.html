@@ -26,6 +26,7 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="images/favicon.png">
 
+
   <!-- The Map
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <style type="text/css">
@@ -62,6 +63,7 @@
     <div class="row">
         <div id="header-box">
           <h1 class="beforeMap">Wo ist Martin?</h1>
+          <input class="u-full-width" placeholder="Tell us where you saw Martin" id="searchTextField" onfocus="geolocate()">
           <button class="button-primary" onclick="savePosition(markerLat, markerLng)">SAVE</button>
         </div>
     </div>
@@ -74,6 +76,7 @@
     var marker;
     var markerLat;
     var markerLng;
+    var autocomplete;
 
     function initMap() {
       var myLatLng = {lat: 53.5486471, lng: 9.9861163};
@@ -87,6 +90,7 @@
         placeMarker(e.latLng, map)
       });
 
+      initAutocomplete();
     }
 
     function placeMarker(latLng, map) {
@@ -99,7 +103,7 @@
             draggable: true
         });
 
-        // Retrieved the marker position to send to backend
+        // Storing the marker position to send to backend
         markerLat = marker.position.lat();
         markerLng = marker.position.lng();
 
@@ -118,13 +122,25 @@
         xhttp2.send();
     }
 
+    function initAutocomplete() {
+      autocomplete = new google.maps.places.Autocomplete(
+        (document.getElementById('searchTextField')),
+        {types: ['geocode']}
+      );
+    }
+    //todo: Use selected address to set marker and store coordinates
+
+
+
+
+
 
 
 
   </script>
 
   <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-ptSi5Ryh7O6cIPYj2WtcwWQgakU08hM&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-ptSi5Ryh7O6cIPYj2WtcwWQgakU08hM&signed_in=true&libraries=places&callback=initMap">
   </script>
 
 
