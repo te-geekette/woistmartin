@@ -31,7 +31,8 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <style type="text/css">
     html, body { height: 100%; margin: 0; padding: 0; }
-    /*#map { height: 100%; }*/
+    h1 { color: #395FB3; }
+
     #map {
       height: 100%;
       width: 100%;
@@ -46,6 +47,13 @@
       background-color: rgba(255, 255, 255, 0.65);
       z-index: 200;
       position: relative;
+    }
+
+    #searchTextField{
+      padding: 10px;
+      border-radius: 5px;
+      border-style: solid;
+      border-color: rgba(128, 128, 128, 0.38);
     }
 
     .beforeMap {
@@ -63,7 +71,7 @@
     <div class="row">
         <div id="header-box">
           <h1 class="beforeMap">Wo ist Martin?</h1>
-          <input class="u-full-width" placeholder="Tell us where you saw Martin" id="searchTextField" onfocus="geolocate()">
+          <input class="u-full-width" placeholder="Tell us where you saw Martin" id="searchTextField">
           <button class="button-primary" onclick="savePosition(markerLat, markerLng)">SAVE</button>
         </div>
     </div>
@@ -94,12 +102,15 @@
     }
 
     function placeMarker(latLng, map) {
+        console.log("He");
         if(marker){
           marker.setMap(null);
         }
+
         marker = new google.maps.Marker({
             position: latLng,
             map: map,
+            animation: google.maps.Animation.DROP,
             draggable: true
         });
 
@@ -111,7 +122,6 @@
     }
 
     function savePosition(markerLng, markerLat){
-
         var xhttp = new XMLHttpRequest();
         var xhttp2 = new XMLHttpRequest();
 
@@ -127,14 +137,13 @@
         (document.getElementById('searchTextField')),
         {types: ['geocode']}
       );
+
+      autocomplete.addListener('place_changed', function(e){
+          var place = autocomplete.getPlace();
+          var latLng = place.geometry.location;
+          placeMarker(latLng, map);
+      });
     }
-    //todo: Use selected address to set marker and store coordinates
-
-
-
-
-
-
 
 
   </script>
