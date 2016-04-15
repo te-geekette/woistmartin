@@ -26,6 +26,33 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <link rel="icon" type="image/png" href="images/favicon.png">
 
+  <!-- The Map
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <style type="text/css">
+    html, body { height: 100%; margin: 0; padding: 0; }
+    /*#map { height: 100%; }*/
+    #map {
+      height: 100%;
+      width: 100%;
+      position:absolute;
+      top: 0;
+      left: 0;
+      z-index: 0; /* Set z-index to 0 as it will be on a layer below the contact form */
+    }
+
+    #header-box {
+      padding: 50px;
+      background-color: rgba(255, 255, 255, 0.65);
+      z-index: 200;
+      position: relative;
+    }
+
+    .beforeMap {
+      position: relative;
+      z-index: 100;
+    }
+  </style>
+
 </head>
 <body>
 
@@ -33,12 +60,63 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
     <div class="row">
-      <div class="one-half column" style="margin-top: 25%">
-        <h4>Basic Page</h4>
-        <p>This index.html page is a placeholder with the CSS, font and favicon. It's just waiting for you to add some content! If you need some help hit up the <a href="http://www.getskeleton.com">Skeleton documentation</a>.</p>
-      </div>
+        <div id="header-box">
+          <h1 class="beforeMap">Wo ist Martin?</h1>
+          <button class="button-primary" onclick="savePosition(markerLat, markerLng)">SAVE</button>
+        </div>
     </div>
   </div>
+
+  <div id="map"></div>
+  <script type="text/javascript">
+
+    var map;
+    var marker;
+    var markerLat;
+    var markerLng;
+
+    function initMap() {
+      var myLatLng = {lat: 53.5486471, lng: 9.9861163};
+
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: myLatLng,
+        zoom: 15
+      });
+
+      map.addListener('click', function(e){
+        placeMarker(e.latLng, map)
+      });
+
+    }
+
+    function placeMarker(latLng, map) {
+        if(marker){
+          marker.setMap(null);
+        }
+        marker = new google.maps.Marker({
+            position: latLng,
+            map: map,
+            draggable: true
+        });
+
+        // Retrieved the marker position to send to backend
+        markerLat = marker.position.lat();
+        markerLng = marker.position.lng();
+
+        map.panTo(latLng);
+    }
+
+    function savePosition(markerLng, markerLat){
+        console.log("Hello Backend, this is the position: Lat:" + markerLat + ", Lng: " + markerLng);
+    }
+
+
+  </script>
+
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD-ptSi5Ryh7O6cIPYj2WtcwWQgakU08hM&callback=initMap">
+  </script>
+
 
 <!-- End Document
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
